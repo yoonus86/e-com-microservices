@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
+
+    <!-- Reset the auto-increment sequence for H2 after loading seed data -->
+    <!-- Dynamically sets sequence to MAX(order_id) + 1 to handle any amount of seed data -->
+    <changeSet id="003" author="korber-pharma" runOnChange="true">
+        <sql dbms="h2">
+            ALTER TABLE orders ALTER COLUMN order_id RESTART WITH (SELECT COALESCE(MAX(order_id), 0) + 1 FROM orders);
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>
